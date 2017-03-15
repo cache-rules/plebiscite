@@ -11,21 +11,21 @@ from twilio import twiml
 from twilio.rest import TwilioRestClient
 
 zen_lines = [
-    "Beautiful is better than ugly.",
-    "Explicit is better than implicit.",
-    "Simple is better than complex.",
-    "Complex is better than complicated.",
-    "Flat is better than nested.",
-    "Sparse is better than dense.",
-    "Readability counts.",
-    "Special cases aren't special enough to break the rules.\nAlthough practicality beats purity.",
-    "Errors should never pass silently.\nUnless explicitly silenced.",
-    "In the face of ambiguity, refuse the temptation to guess.",
-    "There should be one-- and preferably only one --obvious way to do it.\nAlthough that way may not be obvious at first unless you're Dutch.",
-    "Now is better than never.\nAlthough never is often better than *right* now.",
-    "If the implementation is hard to explain, it's a bad idea.",
-    "If the implementation is easy to explain, it may be a good idea.",
-    "Namespaces are one honking great idea -- let's do more of those!",
+    'Beautiful is better than ugly.',
+    'Explicit is better than implicit.',
+    'Simple is better than complex.',
+    'Complex is better than complicated.',
+    'Flat is better than nested.',
+    'Sparse is better than dense.',
+    'Readability counts.',
+    'Special cases aren\'t special enough to break the rules.\nAlthough practicality beats purity.',
+    'Errors should never pass silently.\nUnless explicitly silenced.',
+    'In the face of ambiguity, refuse the temptation to guess.',
+    'There should be one-- and preferably only one --obvious way to do it.\nAlthough that way may not be obvious at first unless you\'re Dutch.',
+    'Now is better than never.\nAlthough never is often better than *right* now.',
+    'If the implementation is hard to explain, it\'s a bad idea.',
+    'If the implementation is easy to explain, it may be a good idea.',
+    'Namespaces are one honking great idea -- let\'s do more of those!',
 ]
 
 
@@ -39,6 +39,39 @@ def antigravity(phone, body):
 
 def puppy(phone, body):
     return 'The best meetup in town!'
+
+
+def xyzzy(phone, body):
+    return (
+        'YOU ARE STANDING AT THE END OF A ROAD BEFORE A SMALL BRICK BUILDING. '
+        'AROUND YOU IS A FOREST.  A SMALL STREAM FLOWS OUT OF THE BUILDING AND '
+        'DOWN A GULLY.'
+    )
+
+maze_responses = [
+    'A HOLLOW VOICE SAYS "PLUGH".',
+    'YOU ARE IN A MAZE OF TWISTY LITTLE PASSAGES, ALL DIFFERENT.',
+    'YOU ARE IN A LITTLE MAZE OF TWISTING PASSAGES, ALL DIFFERENT.',
+    'YOU ARE IN A MAZE OF TWISTING LITTLE PASSAGES, ALL DIFFERENT.',
+    'A HOLLOW VOICE SAYS "PLUGH".',
+    'YOU ARE IN A LITTLE MAZE OF TWISTY PASSAGES, ALL DIFFERENT.',
+    'YOU ARE IN A TWISTING MAZE OF LITTLE PASSAGES, ALL DIFFERENT.',
+    'YOU ARE IN A TWISTING LITTLE MAZE OF PASSAGES, ALL DIFFERENT.',
+    'A HOLLOW VOICE SAYS "PLUGH".',
+    'YOU ARE IN A TWISTY LITTLE MAZE OF PASSAGES, ALL DIFFERENT.',
+    'YOU ARE IN A TWISTY MAZE OF LITTLE PASSAGES, ALL DIFFERENT.',
+    'YOU ARE IN A LITTLE TWISTY MAZE OF PASSAGES, ALL DIFFERENT.',
+    'A HOLLOW VOICE SAYS "PLUGH".',
+    'YOU ARE IN A MAZE OF LITTLE TWISTING PASSAGES, ALL DIFFERENT.',
+    'YOU ARE IN A MAZE OF LITTLE TWISTY PASSAGES, ALL DIFFERENT.',
+    'YOU ARE IN A MAZE OF TWISTY LITTLE PASSAGES, ALL ALIKE.',
+    'YOU ARE AT WITT\'S END.  PASSAGES LEAD OFF IN *ALL* DIRECTIONS.',
+    'A HOLLOW VOICE SAYS "PLUGH".',
+]
+
+
+def move_direction(phone, body):
+    return random.choice(maze_responses)
 
 
 def results_comparator(a, b):
@@ -81,6 +114,11 @@ class App:
             'import this': zen,
             'import antigravity': antigravity,
             'puppy': puppy,
+            'xyzzy': xyzzy,
+            'go north': move_direction,
+            'go east': move_direction,
+            'go south': move_direction,
+            'go west': move_direction,
             'ballot': self.help,
         }
         self.election_expiration = None
@@ -106,10 +144,11 @@ class App:
         return results
 
     def index(self):
-        return render_template('index.html', results=self.serialize_results(), phone=self.phone)
+        return render_template('index.html', requests=self.req_counter, voters=len(self.voters),
+                               results=self.serialize_results(), phone=self.phone)
 
     def status_get(self):
-        return jsonify(results=self.serialize_results())
+        return jsonify(requests=self.req_counter, voters=len(self.voters), results=self.serialize_results())
 
     def help(self, phone, body):
         if self.election_expiration is None:
