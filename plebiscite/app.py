@@ -319,9 +319,8 @@ class App:
                 resp.message(msg)
                 return str(resp)
 
-
         handler = self.special_commands.get(body.lower(), self.vote)
-        print(body.lower(), handler.__name__)
+
         try:
             resp.message(handler(phone, body))
         except Exception as e:
@@ -353,8 +352,3 @@ class App:
         self.reset_election()
 
         return jsonify(success=True)
-
-
-if __name__ == '__main__':
-    print(zen(None, None))
-    print(antigravity(None, None))
