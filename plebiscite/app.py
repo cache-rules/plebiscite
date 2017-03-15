@@ -90,6 +90,15 @@ def license(phone, body):
     )
 
 
+def python_version(phone, body):
+    return (
+        'Python 3.6.0\n'
+        '[GCC 4.9.2] on linux\n'
+        'Type "help", "copyright", "credits" or "license" for more information.\n'
+        '>>>'
+    )
+
+
 def results_comparator(a, b):
     votes_a = len(a['votes'])
     votes_b = len(b['votes'])
@@ -137,6 +146,7 @@ class App:
             'go west': move_direction,
             'pip freeze': pip_freeze,
             'license': license,
+            'python': python_version,
             'ballot': self.help,
         }
         self.election_expiration = None
