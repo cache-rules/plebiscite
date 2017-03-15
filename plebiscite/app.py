@@ -77,15 +77,15 @@ def move_direction(phone, body):
 def pip_freeze(phone, body):
     return (
         'Flask==0.12\n'
-        'twilio==5.7.0'
+        'twilio==5.7.0\n'
         'waitress==1.0.2\n'
     )
 
 
 def license(phone, body):
     return (
-        '         Apache License\n'
-        '   Version 2.0, January 2004\n'
+        'Apache License\n'
+        'Version 2.0, January 2004\n'
         'http://www.apache.org/licenses/\n'
     )
 
