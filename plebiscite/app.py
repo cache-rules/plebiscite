@@ -74,6 +74,22 @@ def move_direction(phone, body):
     return random.choice(maze_responses)
 
 
+def pip_freeze(phone, body):
+    return (
+        'Flask==0.12\n'
+        'twilio==5.7.0'
+        'waitress==1.0.2\n'
+    )
+
+
+def license(phone, body):
+    return (
+        '         Apache License\n'
+        '   Version 2.0, January 2004\n'
+        'http://www.apache.org/licenses/\n'
+    )
+
+
 def results_comparator(a, b):
     votes_a = len(a['votes'])
     votes_b = len(b['votes'])
@@ -119,6 +135,8 @@ class App:
             'go east': move_direction,
             'go south': move_direction,
             'go west': move_direction,
+            'pip freeze': pip_freeze,
+            'license': license,
             'ballot': self.help,
         }
         self.election_expiration = None
