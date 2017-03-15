@@ -9,13 +9,15 @@
       margin: 0;
       padding: 0;
     }
-
     body {
       margin: 0;
-      padding: 0;
+      padding: 3em;
       font-family: sans-serif;
     }
-
+    .mf-doom {
+      margin: 0 auto;
+      width: 800px;
+    }
     .ballot-item {
       margin: 0.5em 0;
       padding: 0.5em;
@@ -45,14 +47,22 @@
   </style>
 </head>
 <body>
-  <div class="ballot-header">
-    <div class="ballot-item">
-      <span class="value header">Ballot #</span>
-      <span class="name header">Name</span>
-      <span class="header">Votes</span>
+  <div class="mf-doom">
+    <div class="phone">
+      <h1>
+        Text {{ phone }} to vote!
+      </h1>
+
     </div>
+    <div class="ballot-header">
+      <div class="ballot-item">
+        <span class="value header">Ballot #</span>
+        <span class="name header">Name</span>
+        <span class="header">Votes</span>
+      </div>
+    </div>
+    <div class="ballot-body"></div>
   </div>
-  <div class="ballot-body"></div>
 
   <script src="https://d3js.org/d3.v4.min.js"></script>
 
@@ -72,7 +82,7 @@
       var totalVotes = data.reduce(function (sum, o) { return sum + o.votes; }, 0);
       var ballotBody = d3.select('.ballot-body');
       var keyFn = function (d) { return d.name; };
-      var widthFn = function (d) { return '' + Math.floor((d.votes / totalVotes) * 500) + 'px'; };
+      var widthFn = function (d) { return '' + Math.floor((d.votes / totalVotes) * 495) + 'px'; };
       var voteFn = function (d) { return d.votes };
       var options = ballotBody.selectAll('div.ballot-item').data(data);
       var newOptions = options.enter().append('div').attr('class', 'ballot-item');

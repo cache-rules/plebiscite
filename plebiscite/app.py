@@ -66,6 +66,7 @@ class App:
         self.req_lock = RLock()
         self.config = config
         self.admin = config.get('admin')
+        self.phone = self.config['twilio']['phone']
         self.twilio = TwilioRestClient(self.config['twilio']['account_sid'], self.config['twilio']['token'])
         self.results = {}
         self.voters = {}
@@ -105,7 +106,7 @@ class App:
         return results
 
     def index(self):
-        return render_template('index.html', results=self.serialize_results())
+        return render_template('index.html', results=self.serialize_results(), phone=self.phone)
 
     def status_get(self):
         return jsonify(results=self.serialize_results())
