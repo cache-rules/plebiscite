@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Results</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    .ballot-item {
+      margin: 0.5em 0;
+      padding: 0.5em;
+      font-size: 1.2em;
+    }
+    .value {
+      display: inline-block;
+      text-align: center;
+      width: 65px;
+      margin-right: 1em;
+    }
+    .name {
+      display: inline-block;
+      width: 200px;
+    }
+    .votes {
+      display: inline-block;
+      color: white;
+      text-align: center;
+      background-color: steelblue;
+      padding: 0.2em 0;
+    }
+
+    .header {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="ballot-header">
+    <div class="ballot-item">
+      <span class="value header">Ballot #</span>
+      <span class="name header">Name</span>
+      <span class="header">Votes</span>
+    </div>
+  </div>
+  <div class="ballot-body"></div>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+
+  <script>
+    window.__data__ = {{ results | tojson }};
+
+    function renderChart(data) {
+      data.sort(function (a, b) {
+        if (a.votes < b.votes) {
+          return 1;
+        } else if (a.votes > b.votes) {
+          return -1;
+        }
+
+        return 0;
+      });
+      var totalVotes = data.reduce(function (sum, o) { return sum + o.votes; }, 0);
+      var ballotBody = d3.select('.ballot-body');
+      var keyFn = function (d) { return d.name; };
+      var widthFn = function (d) { return '' + Math.floor((d.votes / totalVotes) * 500) + 'px'; };
+      var voteFn = function (d) { return d.votes };
+      var options = ballotBody.selectAll('div.ballot-item').data(data);
+      var newOptions = options.enter().append('div').attr('class', 'ballot-item');
+      var allOptions = newOptions.merge(options).transition(1000);
+
+      newOptions.append('span').attr('class', 'value');
+      newOptions.append('span').attr('class', 'name');
+      newOptions.append('span').attr('class', 'votes').text(voteFn).style('width', '0px');
+
+      allOptions.select('span.value').text(function (d) { return d.value; });
+      allOptions.select('span.name').text(function (d) { return '' + d.name; });
+      allOptions.select('span.votes').text(voteFn).style('width', widthFn);
+
+      options.exit().remove();
+    }
+
+    renderChart(__data__);
+
+    d3.interval(function () {
+      d3.json('/status', function (d) { renderChart(d.results); });
+    }, 1000);
+  </script>
+</body>
+</html>
