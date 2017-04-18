@@ -123,7 +123,7 @@ class App:
         self.req_counter = 0
         self.req_lock = RLock()
         self.config = config
-        self.admin = config.get('admin')
+        self.admin = set(config.get('admin'))
         self.phone = self.config['twilio']['phone']
         self.twilio = TwilioRestClient(self.config['twilio']['account_sid'], self.config['twilio']['token'])
         self.results = {}
@@ -322,7 +322,7 @@ class App:
         phone = request.form['From']
         body = request.form['Body'].strip()
 
-        if phone == self.admin:
+        if phone in self.admin:
             msg = self.handle_admin(body)
 
             if msg is not None:
