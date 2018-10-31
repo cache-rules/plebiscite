@@ -282,8 +282,10 @@ class App:
 
             # Clear the votes from individual voter records
             for voter in self.voters.values():
-                if body in voter:
-                    voter.remove(body)
+                votes = voter['votes']
+
+                while body in votes:
+                    votes.remove(body)
 
         return f'{option["name"]} has been removed'
 

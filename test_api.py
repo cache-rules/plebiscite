@@ -82,10 +82,10 @@ def test_other_functions(sms_url, admin_phone):
     r = requests.post(sms_url, data={'Body': 'ballot', 'From': phone})
     print(r.text)
 
-    r = requests.post(sms_url, data={'Body': 'STATUS', 'From': phone})
+    r = requests.post(sms_url, data={'Body': 'status', 'From': phone})
     print(r.text)
 
-    r = requests.post(sms_url, data={'Body': 'STATUS', 'From': admin_phone})
+    r = requests.post(sms_url, data={'Body': 'status', 'From': admin_phone})
     print(r.text)
 
 
@@ -105,7 +105,10 @@ def test_remove(sms_url, phone, options):
     r = requests.post(sms_url, data={'Body': f'remove {len(options)}', 'From': phone})
     print(r.text)
 
-    r = requests.post(sms_url, data={'Body': 'STATUS', 'From': phone})
+    r = requests.post(sms_url, data={'Body': 'status', 'From': phone})
+    print(r.text)
+
+    r = requests.post(sms_url, data={'Body': 'ballot', 'From': phone})
     print(r.text)
 
 
