@@ -3,7 +3,7 @@ import json
 
 from waitress import serve
 
-from plebiscite.app import App
+from app import App
 
 parser = argparse.ArgumentParser(description='Start a plebiscite web server')
 parser.add_argument('config', help='Path to the config.json file used to configure the server')

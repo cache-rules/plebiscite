@@ -8,7 +8,7 @@ from flask import Flask, jsonify
 from flask import render_template
 from flask import request
 from twilio import twiml
-from twilio.rest import TwilioRestClient
+from twilio.rest import Client
 
 zen_lines = [
     'Beautiful is better than ugly.',
@@ -125,7 +125,7 @@ class App:
         self.config = config
         self.admin = set(config.get('admin'))
         self.phone = self.config['twilio']['phone']
-        self.twilio = TwilioRestClient(self.config['twilio']['account_sid'], self.config['twilio']['token'])
+        self.twilio = Client(self.config['twilio']['account_sid'], self.config['twilio']['token'])
         self.results = {}
         self.voters = {}
         self.admin_cmds = {
