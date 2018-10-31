@@ -97,5 +97,6 @@ def run():
     cast_votes(sms_url, len(options))
     test_other_functions(sms_url, args.phone)
 
+
 if __name__ == '__main__':
     run()
