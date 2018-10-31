@@ -18,3 +18,11 @@ run:
 	-v $(shell pwd)/config.json:/usr/src/plebiscite/config.json \
 	-p 8080:8080 \
 	plebiscite
+
+.PHONY: prod
+prod:
+	docker run -d --rm \
+	--name plebiscite \
+	-v $(shell pwd)/config.json:/usr/src/plebiscite/config.json \
+	-p 8080:8080 \
+	plebiscite
