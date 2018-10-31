@@ -89,12 +89,33 @@ def test_other_functions(sms_url, admin_phone):
     print(r.text)
 
 
+def test_remove(sms_url, phone, options):
+    r = requests.post(sms_url, data={'Body': 'add Alan Vezina', 'From': phone})
+    print(r.text)
+
+    r = requests.post(sms_url, data={'Body': f'{len(options)}', 'From': phone})
+    print(r.text)
+
+    r = requests.post(sms_url, data={'Body': f'{len(options)}', 'From': phone})
+    print(r.text)
+
+    r = requests.post(sms_url, data={'Body': 'STATUS', 'From': phone})
+    print(r.text)
+
+    r = requests.post(sms_url, data={'Body': f'remove {len(options)}', 'From': phone})
+    print(r.text)
+
+    r = requests.post(sms_url, data={'Body': 'STATUS', 'From': phone})
+    print(r.text)
+
+
 def run():
     args = parser.parse_args()
     sms_url = f'{args.url}/sms'
     options = load_file(args.options)
     setup_ballot(sms_url, args.phone, options)
     cast_votes(sms_url, len(options))
+    test_remove(sms_url, args.phone, options)
     test_other_functions(sms_url, args.phone)
 
 

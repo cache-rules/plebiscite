@@ -133,6 +133,7 @@ class App:
             'disable': self.stop_election,
             'reset': self.reset_election,
             'add': self.add_option,
+            'remove': self.remove_option,
             'status': self.status,
         }
         self.special_commands = {
@@ -261,6 +262,30 @@ class App:
             self.results[str(len(self.results))] = {'name': parts, 'votes': []}
 
         return f'{parts} has been added.'
+
+    def remove_option(self, parts):
+        """
+        Removes an option from the election.
+
+        :return:
+        """
+        body = ' '.join(parts)
+
+        with self.voter_lock:
+            option = self.results.get(body, None)
+
+            if option is None:
+                return 'Does not compute. Type "ballot" to see available options.'
+
+            # Clear the votes for this option.
+            self.results.pop(body)
+
+            # Clear the votes from individual voter records
+            for voter in self.voters.values():
+                if body in voter:
+                    voter.remove(body)
+
+        return f'{option["name"]} has been removed'
 
     def reset_election(self, *args):
         """
