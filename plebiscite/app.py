@@ -7,7 +7,7 @@ from threading import RLock
 from flask import Flask, jsonify
 from flask import render_template
 from flask import request
-from twilio import twiml
+from twilio.twiml.messaging_response import MessagingResponse
 from twilio.rest import Client
 
 zen_lines = [
@@ -318,7 +318,7 @@ class App:
         with self.req_lock:
             self.req_counter += 1
 
-        resp = twiml.Response()
+        resp = MessagingResponse()
         phone = request.form['From']
         body = request.form['Body'].strip()
 
